@@ -4,7 +4,10 @@ import error from "../img/close.svg"
 import warn from "../img/alert.svg"
 import info from "../img/formation.svg"
 
-
+// success 操作成功
+// error 操作失败
+// warn 警告
+// info 提示
 export type messageType = 'success' | 'error' | 'warn' | 'info'
 
 export function getColorByStatus(status: messageType) {
@@ -43,14 +46,30 @@ function getIndex(id: string) {
   return array.findIndex(obj => obj.id === id)
 }
 
+/**
+ * 返回具有给定 id 的元素的高度。
+ * @param id - 要获取高度的元素的 id。
+ * @returns 表示元素高度的字符串值（以像素为单位）。
+ */
 export function getHeight(id: string): string {
+  // 使用 getIndex 函数获取具有给定 id 的元素的索引。
   const index = getIndex(id)
-  return (index === 0 ? 20 : 20 * (index + 1) + (40 * index)) + 'px'
+
+  // 如果索引为 0 或 -1，则返回高度为 20 像素。
+  if (index === 0 || index === -1) {
+    return '20px'
+  }
+
+  // 使用公式 20 * (index + 1) + (40 * index) 基于索引计算高度。
+  const height = 20 * (index + 1) + (40 * index)
+
+  // 将高度值与字符串 'px' 连接并返回。
+  return height + 'px'
 }
 
 export function generateRandomString(length: number) {
-  let result = '';
-  const characters = 'abcdefghijklmnopqrstuvwxyz';
+  let result: string = '';
+  const characters = 'abcdefghijklmnopqrstuvwxyz1234567890';
   for (let i = 0; i < length; i++) {
     result += characters.charAt(Math.floor(Math.random() * characters.length));
   }
