@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import { useTimeoutFn } from '@vueuse/core'
-import { closeInstance, generateRandomString, getColorByStatus, getHeight, getImageByStatus, messageType, setInstance } from '../instance';
+import { closeInstance, generateRandomString, getColorByStatus, getHeight, getImageByStatus, messageType, setInstance } from './instance';
 
 interface Props {
   duration?: number
@@ -65,14 +65,12 @@ defineExpose({
 </script>
 
 <template>
-  <teleport to="body">
     <transition name="message">
       <div v-show="show" class="message" ref="messageRef" @mouseenter="clearTimer" @mouseleave="startTimer">
         <img :src="img">
         <span v-if="props.message" v-html="props.message" class="message-text"></span>
       </div>
     </transition>
-  </teleport>
 </template>
 
 <style scoped>

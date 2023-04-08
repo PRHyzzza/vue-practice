@@ -1,15 +1,11 @@
 <script setup lang="ts">
-import Message from './components/message/src/Message.vue';
-
+import { message } from './components'
+message.success('测试1', 3000)
+message.error('测试2', 4000)
+message.warn('测试3', 5009)
+message.info('测试4', 6009)
 </script>
 
-<template>
-  <Message type="warn" :duration="2000"/>
-  <Message type="success" :duration="3000"/>
-  <Message type="info" :duration="4000"/>
-  <Message type="error" :duration="5000"/>
-</template>
+<template></template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
