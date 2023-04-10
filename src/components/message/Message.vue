@@ -65,12 +65,12 @@ defineExpose({
 </script>
 
 <template>
-    <transition name="message">
-      <div v-show="show" class="message" ref="messageRef" @mouseenter="clearTimer" @mouseleave="startTimer">
-        <img :src="img">
-        <span v-if="props.message" v-html="props.message" class="message-text"></span>
-      </div>
-    </transition>
+  <transition name="message">
+    <div v-show="show" class="message" ref="messageRef" @mouseenter="clearTimer" @mouseleave="startTimer">
+      <img :src="img">
+      <span v-if="props.message" v-html="props.message" class="message-text"></span>
+    </div>
+  </transition>
 </template>
 
 <style scoped>
