@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import { useTimeoutFn } from '@vueuse/core'
-import { closeInstance, generateRandomString, getColorByStatus, getHeight, getImageByStatus, messageType, setInstance } from './instance';
+import { closeInstance, getColorByStatus, getHeight, getImageByStatus, messageType, setInstance } from './instance';
+import useRandom from '../../hooks/useRandom';
 
 interface Props {
   duration?: number
@@ -20,16 +21,16 @@ const props = withDefaults(defineProps<Props>(), {
   zIndex: 9000
 })
 
-const id = ref(generateRandomString(6)) // 生成随机 ID
+const { result } = useRandom(6)
 const show = ref<boolean>(false) // 是否显示通知
 const messageRef = ref<HTMLDivElement>() // 通知的 HTMLDivElement 引用
 const color = computed(() => getColorByStatus(props.type!)) // 根据 type prop 返回颜色
 const img = computed(() => getImageByStatus(props.type!)) // 根据 type prop 返回图像
-const top = computed(() => getHeight(id.value)) // 根据 id 值返回通知的高度
+const top = computed(() => getHeight(result.value)) // 根据 id 值返回通知的高度
 
 onMounted(() => {
   startTimer() // 启动计时器
-  setInstance(id.value, messageRef.value) // 设置实例
+  setInstance(result.value, messageRef.value) // 设置实例
   show.value = true // 显示通知
 })
 
@@ -55,7 +56,7 @@ function close() {
   // 将 show 值设置为 false
   show.value = false
   // 关闭实例
-  closeInstance(id.value)
+  closeInstance(result.value)
 }
 
 // 将 close 函数暴露出去

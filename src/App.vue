@@ -1,11 +1,16 @@
 <script setup lang="ts">
-import { message } from './components'
-message.success('测试1', 3000)
-message.error('测试2', 4000)
-message.warn('测试3', 5009)
-message.info('测试4', 6009)
+import { message, messageBox } from './components'
+
+function cs() {
+ messageBox({ text: "测试" }).then(() => {
+  message.success('测试1', 3000)
+ })
+}
 </script>
 
-<template></template>
+<template>
+ <button @click="cs">测试</button>
+</template>
 
-<style scoped></style>
+<style scoped>
+</style>

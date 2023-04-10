@@ -1,10 +1,12 @@
 import { RendererElement, RendererNode, VNode, h, render } from 'vue'
 import Message from './Message.vue'
 import { useTimeoutFn } from '@vueuse/core'
+import useRandom from '../../hooks/useRandom'
 
 function createMessage(vnode: VNode<RendererNode, RendererElement, { [key: string]: any }> | null, duration: number = 3000) {
+    const { result } = useRandom(6)
     const node = document.createElement('div')
-    node.id = "message"
+    node.id = `message-${result.value}`
     document.body.appendChild(node)
     render(vnode, node)
     const { start, stop } = useTimeoutFn(() => {

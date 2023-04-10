@@ -1,3 +1,4 @@
 import message from "./message"
+import messageBox from "./messageBox"
 
-export { message }
+export { message, messageBox }

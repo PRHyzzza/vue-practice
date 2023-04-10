@@ -67,15 +67,6 @@ export function getHeight(id: string): string {
   return height + 'px'
 }
 
-export function generateRandomString(length: number) {
-  let result: string = '';
-  const characters = 'abcdefghijklmnopqrstuvwxyz1234567890';
-  for (let i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * characters.length));
-  }
-  return result;
-}
-
 export function closeInstance(id: string) {
   array.splice(getIndex(id), 1)
 }
