@@ -53,7 +53,7 @@ const message = {
   info: (text?: string, duration?: number) => {
     const vnode = h(Message, { type: 'info', message: text, duration })
     createMessage(vnode, duration)
-  },
+  }
 }
 
 export default message
