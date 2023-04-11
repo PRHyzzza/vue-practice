@@ -1,6 +1,6 @@
-import { h, render } from "vue"
-import useRandom from "../../hooks/useRandom"
-import MessageBox from "./MessageBox.vue"
+import { h, render } from 'vue'
+import useRandom from '../../hooks/useRandom'
+import MessageBox from './MessageBox.vue'
 
 /**
  * 消息框选项
@@ -23,7 +23,7 @@ interface Props {
   confirmText?: string
   color?: string
   showConfirmCallback?: boolean
-  showCloseCallback?: boolean,
+  showCloseCallback?: boolean
 }
 
 export default (options: Props) => {
@@ -39,22 +39,24 @@ export default (options: Props) => {
     node.remove()
   }
   // 返回Promise对象
-  return new Promise((resolve: (value: "confirm") => void, reject: (value: "close") => void,) => {
+  return new Promise((resolve, reject) => {
     // 创建回调函数
     const confirmCallback = (showConfirmCallback: boolean) => {
       close()
-      if (showConfirmCallback) resolve("confirm")
+      if (showConfirmCallback)
+        resolve('confirm')
     }
     const closeCallback = (showCloseCallback: boolean) => {
       close()
-      if (showCloseCallback) reject("close")
+      if (showCloseCallback)
+        reject(new Error('close'))
     }
 
     // 渲染MessageBox组件
     const vNode = h(MessageBox, {
       confirmCallback,
       closeCallback,
-      ...options
+      ...options,
     })
     render(vNode, node)
   })

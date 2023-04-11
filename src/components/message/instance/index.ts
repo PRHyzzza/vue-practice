@@ -1,8 +1,8 @@
-import { shallowReactive } from "vue"
-import success from "../img/success.svg"
-import error from "../img/close.svg"
-import warn from "../img/alert.svg"
-import info from "../img/formation.svg"
+import { shallowReactive } from 'vue'
+import success from '../img/success.svg'
+import error from '../img/close.svg'
+import warn from '../img/alert.svg'
+import info from '../img/formation.svg'
 
 // success 操作成功
 // error 操作失败
@@ -36,7 +36,7 @@ export function getImageByStatus(status: messageType) {
   }
 }
 
-const array = shallowReactive<{ id: string, data: HTMLDivElement | undefined }[]>([])
+const array = shallowReactive<{ id: string; data: HTMLDivElement | undefined }[]>([])
 
 export function setInstance(id: string, data: HTMLDivElement | undefined) {
   array.push({ id, data })
@@ -56,15 +56,14 @@ export function getHeight(id: string): string {
   const index = getIndex(id)
 
   // 如果索引为 0 或 -1，则返回高度为 20 像素。
-  if (index === 0 || index === -1) {
+  if (index === 0 || index === -1)
     return '20px'
-  }
 
   // 使用公式 20 * (index + 1) + (40 * index) 基于索引计算高度。
   const height = 20 * (index + 1) + (40 * index)
 
   // 将高度值与字符串 'px' 连接并返回。
-  return height + 'px'
+  return `${height}px`
 }
 
 export function closeInstance(id: string) {

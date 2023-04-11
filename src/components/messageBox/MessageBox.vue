@@ -1,70 +1,70 @@
 <script setup lang="ts">
 import { useTimeoutFn } from '@vueuse/core'
-import { ref, onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 
 interface Props {
- text?: string
- title?: string
- confirmCallback: (showConfirmCallback: boolean) => void
- closeCallback: (showCloseCallback: boolean) => void
- showConfirm?: boolean
- showClose?: boolean
- closeText?: string
- confirmText?: string
- color?: string
- showConfirmCallback?: boolean
- showCloseCallback?: boolean,
+  text?: string
+  title?: string
+  confirmCallback: (showConfirmCallback: boolean) => void
+  closeCallback: (showCloseCallback: boolean) => void
+  showConfirm?: boolean
+  showClose?: boolean
+  closeText?: string
+  confirmText?: string
+  color?: string
+  showConfirmCallback?: boolean
+  showCloseCallback?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
- title: "提示",
- text: "",
- showClose: true,
- showConfirm: true,
- closeText: '取消',
- confirmText: '确定',
- color: '#93c5fd',
- showConfirmCallback: true,
- showCloseCallback: false
+  title: '提示',
+  text: '',
+  showClose: true,
+  showConfirm: true,
+  closeText: '取消',
+  confirmText: '确定',
+  color: '#93c5fd',
+  showConfirmCallback: true,
+  showCloseCallback: false,
 })
 
 const show = ref(false)
 
 onMounted(() => {
- show.value = true
+  show.value = true
 })
 
-const clickBtn = (type: 'close' | 'confirm') => {
- show.value = false
- const { start, stop } = useTimeoutFn(() => {
-  if (type === 'close') {
-   props.closeCallback(props.showCloseCallback)
-  } else {
-   props.confirmCallback(props.showConfirmCallback)
-  }
-  stop()
- }, 100)
- start()
+function clickBtn(type: 'close' | 'confirm') {
+  show.value = false
+  const { start, stop } = useTimeoutFn(() => {
+    if (type === 'close')
+      props.closeCallback(props.showCloseCallback)
+    else
+      props.confirmCallback(props.showConfirmCallback)
+
+    stop()
+  }, 100)
+  start()
 }
 </script>
 
 <template>
- <Transition name="message-box">
-  <div v-show="show" class="message-box-mask">
-   <div class="message-box-container">
-    <div class="message-box-header">
-     <div v-html="title"></div>
+  <Transition name="message-box">
+    <div v-show="show" class="message-box-mask">
+      <div class="message-box-container">
+        <div class="message-box-header">
+          <div v-html="title" />
+        </div>
+        <div class="message-box-body">
+          <div v-html="text" />
+        </div>
+        <div class="message-box-footer">
+          <div v-if="showClose" class="message-box-button close" @click="clickBtn('close')" v-text="closeText" />
+          <div v-if="showConfirm" class="message-box-button confirm" @click="clickBtn('confirm')" v-text="confirmText" />
+        </div>
+      </div>
     </div>
-    <div class="message-box-body">
-     <div v-html="text"></div>
-    </div>
-    <div class="message-box-footer">
-     <div class="message-box-button close" @click="clickBtn('close')" v-if="showClose" v-text="closeText"></div>
-     <div class="message-box-button confirm" @click="clickBtn('confirm')" v-if="showConfirm" v-text="confirmText"></div>
-    </div>
-   </div>
-  </div>
- </Transition>
+  </Transition>
 </template>
 
 <style scoped>

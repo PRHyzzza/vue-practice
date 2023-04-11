@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import { useTimeoutFn } from '@vueuse/core'
-import { closeInstance, getColorByStatus, getHeight, getImageByStatus, messageType, setInstance } from './instance';
-import useRandom from '../../hooks/useRandom';
+import useRandom from '../../hooks/useRandom'
+import type { messageType } from './instance'
+import { closeInstance, getColorByStatus, getHeight, getImageByStatus, setInstance } from './instance'
 
 interface Props {
   duration?: number
@@ -18,7 +19,7 @@ const props = withDefaults(defineProps<Props>(), {
   duration: 3000,
   message: '',
   type: 'info',
-  zIndex: 9000
+  zIndex: 9000,
 })
 
 const { result } = useRandom(6)
@@ -42,7 +43,8 @@ const { start, stop } = useTimeoutFn(() => {
 // 开始计时器
 function startTimer() {
   // 如果持续时间为 0，则返回
-  if (props.duration === 0) return
+  if (props.duration === 0)
+    return
   start()
 }
 
@@ -61,15 +63,15 @@ function close() {
 
 // 将 close 函数暴露出去
 defineExpose({
-  close
+  close,
 })
 </script>
 
 <template>
   <transition name="message">
-    <div v-show="show" class="message" ref="messageRef" @mouseenter="clearTimer" @mouseleave="startTimer">
+    <div v-show="show" ref="messageRef" class="message" @mouseenter="clearTimer" @mouseleave="startTimer">
       <img :src="img">
-      <span v-if="props.message" v-html="props.message" class="message-text"></span>
+      <span v-if="props.message" class="message-text" v-html="props.message" />
     </div>
   </transition>
 </template>
