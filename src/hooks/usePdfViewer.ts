@@ -6,12 +6,16 @@ import useDownFile from './useDownFile'
 
 pdf.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdf.version}/pdf.worker.js`
 
+export type mode = 'full' | 'box'
+
 interface Props {
   src: string
   blob?: boolean
-  width?: number
-  height?: number
+  width?: string | number
+  height?: string | number
   maxZoom?: number
+  showTools?: boolean
+  mode?: mode
 }
 
 export default (canvasRef: Ref<HTMLCanvasElement[]>, options: Props) => {
@@ -38,7 +42,7 @@ export default (canvasRef: Ref<HTMLCanvasElement[]>, options: Props) => {
     if (!page)
       return
 
-    const canvas = canvasRef.value?.[index.value - 1] // 获取画布
+    const canvas = canvasRef.value?.[pageNum - 1] // 获取画布
     if (!canvas)
       return
 
@@ -61,24 +65,24 @@ export default (canvasRef: Ref<HTMLCanvasElement[]>, options: Props) => {
     page.render(renderContext) // 渲染页面
   }
 
-  function previous() {
-    index.value = (index.value - 1 + pdfData.value.pdfPages) % pdfData.value.pdfPages || pdfData.value.pdfPages
-    renderPage(index.value)
-  }
-
   function next() {
-    index.value = (index.value % pdfData.value.pdfPages) + 1
-    renderPage(index.value)
+    // 实现下一页功能
+    if (index.value < pdfData.value.pdfPages) {
+      index.value++
+      renderPage(index.value)
+    }
   }
 
   function shrink() {
     pdfData.value.pdfScale = Math.max(pdfData.value.pdfScale - 0.1, 0.1)
-    renderPage(index.value)
+    for (let key = 1; key <= index.value; key++)
+      renderPage(key)
   }
 
   function enlarge() {
     pdfData.value.pdfScale = Math.min(pdfData.value.pdfScale + 0.1, options.maxZoom!)
-    renderPage(index.value)
+    for (let key = 1; key <= index.value; key++)
+      renderPage(key)
   }
 
   const loadPdf = async () => {
@@ -115,7 +119,6 @@ export default (canvasRef: Ref<HTMLCanvasElement[]>, options: Props) => {
   return {
     pdfData,
     index,
-    previous,
     next,
     shrink,
     enlarge,
