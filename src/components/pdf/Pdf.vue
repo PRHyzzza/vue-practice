@@ -47,7 +47,7 @@ const widthStyle = computed(() => {
 
 // 定义一个计算属性，用于设置PDF容器元素的高度样式
 const heightStyle = computed(() => {
-  return `${parseInt(props.height as string)}px`
+  return `${parseInt(props.height as string) + 40}px`
 })
 
 // 监听arrivedState.bottom属性的变化，如果为true则调用next函数
@@ -59,24 +59,25 @@ watch(() => arrivedState.bottom, () => {
 
 <template>
   <div ref="pdfRef" class="pdf-box">
+    <div v-if="showTools" class="pdf-tools">
+      <div class="pdf-btn" @click="enlarge">
+        <img src="./img/ZoomIn.svg">
+      </div>
+      <div class="pdf-btn" @click="shrink">
+        <img src="./img/ZoomOut.svg">
+      </div>
+      <div class="pdf-btn" @click="download()">
+        <img src="./img/down.svg">
+      </div>
+    </div>
     <canvas
       v-for="item in pdfData.pdfPages"
       v-show="item <= index"
       :id="`pdfCanvas${item}`"
       ref="canvasRef"
       :key="item"
+      class="pdf-canvas"
     />
-  </div>
-  <div v-if="showTools" class="pdf-tools">
-    <div class="pdf-btn" @click="shrink">
-      <img src="./img/ZoomOut.svg">
-    </div>
-    <div class="pdf-btn" @click="enlarge">
-      <img src="./img/ZoomIn.svg">
-    </div>
-    <button @click="download()">
-      下载
-    </button>
   </div>
 </template>
 
@@ -84,31 +85,39 @@ watch(() => arrivedState.bottom, () => {
 .pdf-box {
   width: v-bind(widthStyle);
   height: v-bind(heightStyle);
+  position: relative;
   overflow-y: scroll;
   overflow-x: auto;
+  border: 1px solid #ccc;
+  box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.3);
+}
+
+.pdf-canvas{
+  margin-top: 40px;
 }
 
 .pdf-tools {
   display: flex;
   flex-direction: row;
   gap: 8px;
-  justify-content: center;
   align-items: center;
+  position: sticky;
+  top: 0;
+  background-color: rgb(247, 247, 247);
+  z-index: 1;
+  height: 40px;
+  border: 1px solid rgb(247, 247, 247);
+  box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.3);
 }
 
 .pdf-btn {
   cursor: pointer;
-  width: 24px;
-  height: 24px;
-  border: none;
-  background-color: transparent;
   padding: 4px;
   border-radius: 4px;
-  box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.3);
 }
 
 .pdf-btn:hover {
-  background-color: #f0f0f0;
+  opacity: calc(0.7);
 }
 
 .pdf-btn img {
